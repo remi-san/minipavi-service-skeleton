@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use App\Container;
 use MiniPaviService\Http\KernelBuilder;
-use MiniPaviService\Log\ErrorLogLogger;
+use MiniPaviService\Log\LineLogger;
+use MiniPaviService\Log\PhpErrorLog;
 
 // Only this public/ folder is served by the web server, the rest is in the parent folder
 require __DIR__ . '/../vendor/autoload.php';
@@ -21,7 +22,7 @@ $container = Container::build();
 // CONTEXT_SECRET (not without it, with a warning), and the URLs and the emulator come from the
 // web server's environment (config/container.php)
 KernelBuilder::for($container->router(), $container->messages())
-    ->withLogger(new ErrorLogLogger())
+    ->withLogger(new LineLogger(new PhpErrorLog()))
     ->withContextKey((string) getenv('CONTEXT_SECRET'))
     ->withRequestUrl($container->requestUrl())
     ->withEmulator($container->emulator())
