@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Home page of the service: asks for the user's name, and greets them ({{name}}, given by
+App\Controller\HomeController, '' before the user types it). The page format is documented in
+the framework's README.md; `composer lint` checks it, and
+`vendor/bin/minipavi preview config/pages/home.xml data.json` shows it, with the data of a JSON
+file, e.g. {"name": "Ada"}.
+-->
+<page type="template" keyboard="lowercase" echo="on"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../../vendor/remi-san/minipavi-service/schema/page.xsd">
+	<text row="1" bg="blue" fill="yes"> MON SERVICE</text>
+	<line row="2"/>
+
+	<if test="name">
+		<text row="10" align="center" size="double-height" color="yellow">Bonjour {{name}} !</text>
+	</if>
+
+	<text row="20" col="2">Votre nom :</text>
+	<input row="20" col="14" length="18" lines="1" validwith="envoi"/>
+	<key row="20" col="34">Envoi</key>
+	<endkey/>
+</page>

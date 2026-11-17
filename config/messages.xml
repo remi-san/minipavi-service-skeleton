@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Messages the service shows on the Minitel (App\AppMessage), and the framework's it redefines
+(see the framework's config/messages.xml: error, page.first, page.last, endkey...). A page can
+redefine any of them for its screen, with <message name>.
+-->
+<messages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../vendor/remi-san/minipavi-service/schema/messages.xsd">
+	<message name="name.missing">Tapez votre nom puis Envoi</message>
+</messages>
