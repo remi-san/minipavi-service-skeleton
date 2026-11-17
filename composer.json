@@ -8,6 +8,7 @@
     ],
     "require": {
         "php": ">=8.4",
+        "monolog/monolog": "^3.13",
         "php-di/php-di": "^7.1",
         "remi-san/minipavi-service": "*@dev"
     },
