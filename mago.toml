@@ -1,0 +1,26 @@
+# Mago (https://mago.carthage.software): formatter (composer cs, cs-fix), linter and static
+# analyzer (composer analyse) of the service. Run with vendor/bin/mago.
+php-version = "8.4.0"
+
+[source]
+paths = ["src", "tests", "config", "public"]
+# Read for their types, not checked
+includes = ["vendor"]
+
+[analyzer]
+# Fails on any issue, notes included
+minimum-fail-level = "Note"
+ignore = [
+    # Values of unknown type (e.g. what the PHP-DI container gives) are read into a variable,
+    # then narrowed (instanceof...) before use, which the other checks verify
+    "mixed-assignment",
+]
+
+[linter]
+minimum-fail-level = "Note"
+
+[linter.rules]
+# Named arguments where they help reading, not for every literal
+literal-named-argument = { enabled = false }
+# public/index.php keeps errors off the Minitel's screen
+no-ini-set = { enabled = false }

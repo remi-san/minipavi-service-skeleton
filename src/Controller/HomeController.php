@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\AppMessage;
@@ -18,25 +20,27 @@ use MiniPaviService\Vdt\VdtHelper;
  *
  * @extends AbstractController<NoParameters>
  */
-final class HomeController extends AbstractController {
-
+final class HomeController extends AbstractController
+{
     public const NAME = 'home';
 
     public function __construct(
         private Page $page,
-    ) {
-    }
+    ) {}
 
-    public function parametersType(): string {
+    public function parametersType(): string
+    {
         return NoParameters::class;
     }
 
-    protected function onDisplay(Request $request): Response {
+    protected function onDisplay(Request $request): Response
+    {
         // No name yet: the page doesn't greet
         return $this->askName($this->page->display($request->terminal(), ['name' => '']));
     }
 
-    protected function onReadInput(Request $request): Response {
+    protected function onReadInput(Request $request): Response
+    {
         if ($request->functionKey() !== FunctionKey::Send) {
             return $this->onDisplay($request);
         }
@@ -50,7 +54,8 @@ final class HomeController extends AbstractController {
     }
 
     // Sends vdt, then reads a name
-    private function askName(Vdt $vdt): Response {
+    private function askName(Vdt $vdt): Response
+    {
         return Response::readInput($vdt, $this->page->inputCommand());
     }
 }

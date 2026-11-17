@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use MiniPaviService\Core\Router;
+use App\Container;
 use MiniPaviService\Core\Service;
-use MiniPaviService\Message\Messages;
 use MiniPaviService\Minitel\FunctionKey;
 use MiniPaviService\Testing\ServiceTester;
 use PHPUnit\Framework\TestCase;
@@ -20,13 +19,14 @@ final class HomeTest extends TestCase
 
     protected function setUp(): void
     {
-        $container = require __DIR__ . '/../config/container.php';
-        $this->tester = new ServiceTester(new Service($container->get(Router::class), $container->get(Messages::class)));
+        $container = Container::build();
+        $this->tester = new ServiceTester(new Service($container->router(), $container->messages()));
     }
 
     public function testAsksForTheNameOnConnection(): void
     {
-        $this->tester->connect()
+        $this->tester
+            ->connect()
             ->assertRoute('home')
             ->assertScreenContains('MON SERVICE')
             ->assertScreenContains('Votre nom :')
@@ -35,15 +35,11 @@ final class HomeTest extends TestCase
 
     public function testGreetsTheUser(): void
     {
-        $this->tester->connect()
-            ->type('Ada')->press(FunctionKey::Send)
-            ->assertScreenContains('Bonjour Ada !');
+        $this->tester->connect()->type('Ada')->press(FunctionKey::Send)->assertScreenContains('Bonjour Ada !');
     }
 
     public function testAsksAgainWithoutName(): void
     {
-        $this->tester->connect()
-            ->press(FunctionKey::Send)
-            ->assertLine0('Tapez votre nom puis Envoi');
+        $this->tester->connect()->press(FunctionKey::Send)->assertLine0('Tapez votre nom puis Envoi');
     }
 }
