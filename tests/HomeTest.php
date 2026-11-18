@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Container;
+use MiniPaviService\Core\ContextSerializer;
 use MiniPaviService\Core\Service;
 use MiniPaviService\Minitel\FunctionKey;
 use MiniPaviService\Testing\ServiceTester;
@@ -20,7 +21,9 @@ final class HomeTest extends TestCase
     protected function setUp(): void
     {
         $container = Container::build();
-        $this->tester = new ServiceTester(new Service($container->router(), $container->messages()));
+        $this->tester = new ServiceTester(
+            new Service($container->router(), $container->messages(), new ContextSerializer($container->router())),
+        );
     }
 
     public function testAsksForTheNameOnConnection(): void
