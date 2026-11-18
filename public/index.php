@@ -11,9 +11,9 @@ use Monolog\Logger;
 // Only this public/ folder is served by the web server, the rest is in the parent folder
 require __DIR__ . '/../vendor/autoload.php';
 
-// Errors go to the log, not to the Minitel
+// Errors go to the log, not to the Minitel: PHP's display_errors is off (php.ini-production,
+// and the stack's PHP configuration)
 error_reporting(E_ERROR);
-ini_set('display_errors', '0');
 
 // The service's routes and controllers (config/container.php, shared with the tests)
 $container = Container::build();
