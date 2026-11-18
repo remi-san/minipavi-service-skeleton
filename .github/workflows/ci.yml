@@ -1,0 +1,57 @@
+name: CI
+
+# Creates a service from the skeleton, as its users do (composer create-project), and runs
+# its checks. It gets the framework's main (remi-san/minipavi-service), so a run also
+# catches a framework change breaking the skeleton.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # The framework changes without the skeleton: check it every week too
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  create:
+    name: Create a service (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Services need PHP 8.4 (lazy objects)
+        php: ['8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, simplexml, dom
+          coverage: none
+
+      # From this checkout (a path repository, copied rather than linked)
+      - name: Create
+        run: >
+          composer create-project remi-san/minipavi-service-skeleton "$RUNNER_TEMP/Created"
+          --repository='{"type": "path", "url": ".", "options": {"symlink": false}}'
+          --stability=dev --no-interaction --no-progress
+
+      # Mago (mago.toml): its formatter, then its linter and analyzer
+      - name: Formatting
+        working-directory: ${{ runner.temp }}/Created
+        run: composer cs
+
+      - name: Lint and static analysis
+        working-directory: ${{ runner.temp }}/Created
+        run: composer analyse
+
+      - name: Pages
+        working-directory: ${{ runner.temp }}/Created
+        run: composer lint
+
+      - name: Tests
+        working-directory: ${{ runner.temp }}/Created
+        run: composer test

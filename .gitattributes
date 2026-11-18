@@ -1,0 +1,6 @@
+# Not copied into a service created from the skeleton (composer create-project installs
+# from the archive, which leaves these out)
+/.github export-ignore
+/.gitattributes export-ignore
+/CLAUDE.md export-ignore
+/README.md export-ignore
