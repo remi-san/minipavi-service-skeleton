@@ -1,6 +1,7 @@
 # The service in its own Docker stack, joined to minipavi-stack's network (start the stack
-# first: it creates the network). The stack reaches it at http://my-service/: list it in the
-# stack's config/local-services.xml with that URL and a code (README, "Running it").
+# first: it creates the network). The stack reaches it at http://<project>/, the project being
+# the folder's name in lowercase (MyService: http://myservice/): list it in the stack's
+# config/local-services.xml with that URL and a code (README, "Running it").
 services:
   web:
     image: nginx:1.27-alpine
@@ -11,8 +12,8 @@ services:
     networks:
       default:
       minipavi:
-        # Rename it for each service: the stack reaches it by this name
-        aliases: [my-service]
+        # The project's name: the folder's, unless COMPOSE_PROJECT_NAME (.env) or -p says otherwise
+        aliases: ["${COMPOSE_PROJECT_NAME}"]
 
   php:
     build: .

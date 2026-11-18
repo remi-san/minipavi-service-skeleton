@@ -46,25 +46,26 @@ machine with a local gateway and Minitel emulator, run it in its own Docker stac
 
 | Path | Role |
 |---|---|
-| `compose.yaml` | nginx (`web`) and PHP-FPM (`php`), joined to the stack's `minipavi` network as `my-service` |
+| `compose.yaml` | nginx (`web`) and PHP-FPM (`php`), joined to the stack's `minipavi` network under the project's name |
 | `Dockerfile` | the PHP-FPM image (PHP 8.4), which runs the service's folder, mounted as it is |
 | `docker/nginx.conf` | sends every request to `public/index.php`, with the host and path the stack's proxy was asked for |
 
-1. Rename the alias `my-service` in `compose.yaml`: each service on the network needs its own.
-2. Start minipavi-stack first (it creates the `minipavi` network), then the service:
+1. Start minipavi-stack first (it creates the `minipavi` network), then the service:
    ```sh
    echo "CONTEXT_SECRET=$(openssl rand -hex 32)" > .env   # key signing the context
    docker compose up -d --build
    ```
    The service's folder is mounted as it is, `vendor/` included: what you change (code,
    pages, `composer install`/`update`) is served right away, without rebuilding.
-3. List it in the stack's `config/local-services.xml`, with a code and the alias, then restart
+   On the stack's network, it's named after its folder, in lowercase (Compose's project name:
+   `MyService` gives `myservice`), unless `COMPOSE_PROJECT_NAME` is set in `.env`.
+2. List it in the stack's `config/local-services.xml`, with a code and that name, then restart
    the stack's `services` container (`docker compose up -d --force-recreate services`):
    ```xml
    <services>
    	<service code="MYSERVICE">
    		<description>My service</description>
-   		<url>http://my-service/</url>
+   		<url>http://myservice/</url>
    	</service>
    </services>
    ```
