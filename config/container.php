@@ -8,6 +8,7 @@ declare(strict_types=1);
 use App\AppMessage;
 use App\Controller\HomeController;
 use MiniPaviService\Core\Router;
+use MiniPaviService\Core\RouterBuilder;
 use MiniPaviService\Http\Emulator\EmulatorConfig;
 use MiniPaviService\Http\Url\RequestUrl;
 use MiniPaviService\Message\FrameworkMessage;
@@ -51,7 +52,9 @@ return [
     'page.home' => factory([PageXmlParser::class, 'parseFile'])->parameter('file', "{$config}/pages/home.xml"),
     'controller.home' => create(HomeController::class)->constructor(get('page.home'))->lazy(),
 
-    Router::class => create()
-        ->method('addRoute', HomeController::NAME, get('controller.home'))
-        ->method('setDefaultRoute', HomeController::NAME),
+    RouterBuilder::class => create()
+        ->constructor(HomeController::NAME)
+        ->method('addRoute', HomeController::NAME, get('controller.home')),
+    // Fails if the default route isn't a route
+    Router::class => factory([RouterBuilder::class, 'build']),
 ];
