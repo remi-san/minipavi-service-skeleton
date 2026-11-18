@@ -11,8 +11,8 @@ its controller, messages, container and functional test.
 composer create-project remi-san/minipavi-service-skeleton MyService --stability=dev
 ```
 
-`--stability=dev` takes the skeleton's `main`. Until the package is on Packagist, add
-`--repository='{"type": "vcs", "url": "https://github.com/remi-san/minipavi-service-skeleton"}'`.
+It comes from [Packagist](https://packagist.org/packages/remi-san/minipavi-service-skeleton);
+`--stability=dev` takes the skeleton's `main`.
 
 The service needs PHP 8.4 or later (lazy objects), with the `mbstring` and `xml` extensions.
 
