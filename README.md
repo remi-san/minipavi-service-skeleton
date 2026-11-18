@@ -41,15 +41,49 @@ composer analyse   # Mago's linter and static analyzer (mago.toml)
 ## Running it
 
 A MiniPavi gateway calls the service at the URL of its `public/` folder. To run it on your
-machine with a local gateway and Minitel emulator, create it in the `services/` folder of
-[minipavi-stack](https://github.com/remi-san/minipavi-stack) and start the stack:
+machine with a local gateway and Minitel emulator, run it in its own Docker stack beside
+[minipavi-stack](https://github.com/remi-san/minipavi-stack), which proxies it.
 
-```sh
-composer create-project remi-san/minipavi-service-skeleton services/MyService --stability=dev
-docker compose up -d --build services   # http://localhost:8083/MyService/ (the gateway: http://services/MyService/)
-```
+| Path | Role |
+|---|---|
+| `compose.yaml` | nginx (`web`) and PHP-FPM (`php`), joined to the stack's `minipavi` network under the project's name, and published on `localhost:8383` |
+| `Dockerfile` | the PHP-FPM image (PHP 8.4), which runs the service's folder, mounted as it is |
+| `docker/nginx.conf` | sends every request to `public/index.php`, with the host and path the stack's proxy was asked for |
 
-To reach it from the Minitel there, type its URL, `http://services/MyService/`, on the home
-page, or make it the gateway's default service
-(`MINIPAVI_DEFAULT_URL` in `.env`). Deploying it on a server with nginx and PHP-FPM is
-described in minipavi-stack's README ("Deploying a service").
+1. Start minipavi-stack first (it creates the `minipavi` network), then the service:
+   ```sh
+   echo "CONTEXT_SECRET=$(openssl rand -hex 32)" > .env   # key signing the context
+   docker compose up -d --build
+   ```
+   The service's folder is mounted as it is, `vendor/` included: what you change (code,
+   pages, `composer install`/`update`) is served right away, without rebuilding.
+   On the stack's network, it's named after its folder, in lowercase (Compose's project name:
+   `MyService` gives `myservice`), unless `COMPOSE_PROJECT_NAME` is set in `.env`.
+2. List it in the stack's `config/local-services.xml`, with a code and that name, then restart
+   the stack's `services` container (`docker compose up -d --force-recreate services`):
+   ```xml
+   <services>
+   	<service code="MYSERVICE">
+   		<description>My service</description>
+   		<url>http://myservice/</url>
+   	</service>
+   </services>
+   ```
+
+The gateway then reaches it at `http://services/MYSERVICE/`, and a browser at
+http://localhost:8083/MYSERVICE/ opens it in the local emulator. On the Minitel, type its code
+on the home page, pick it in the directory (*Guide*), or make it the gateway's default service
+(`MINIPAVI_DEFAULT_URL=http://services/MYSERVICE/` in the stack's `.env`).
+
+It's also published on this computer only, at http://localhost:8383/, where
+http://localhost:8383/?web=true shows its pages in HTML. Another port is given when starting it
+(`SERVICE_PORT=8384 docker compose up -d`), or in `.env` (`SERVICE_PORT=8384`). This works
+while the stack is stopped, as long as its `minipavi` network exists (it's removed by the
+stack's `docker compose down`).
+
+The stack's proxy strips `/MYSERVICE` and sends the host and path it was asked for in
+`X-Forwarded-Host` and `X-Forwarded-Prefix`. nginx gives them back to PHP (`HTTP_HOST`,
+`PHP_SELF`, `REQUEST_URI`), so the next URL the service gives the gateway is
+`http://services/MYSERVICE/index.php`. It trusts these headers only from Docker's private
+networks. Errors go to `docker compose logs php`. minipavi-stack's README ("Your own
+services") describes the proxy.
