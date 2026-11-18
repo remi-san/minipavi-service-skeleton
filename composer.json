@@ -4,13 +4,13 @@
     "license": "GPL-3.0-or-later",
     "type": "project",
     "repositories": [
-        { "type": "path", "url": "../../framework" }
+        { "type": "vcs", "url": "https://github.com/remi-san/minipavi-service" }
     ],
     "require": {
         "php": ">=8.4",
         "monolog/monolog": "^3.13",
         "php-di/php-di": "^7.1",
-        "remi-san/minipavi-service": "*@dev"
+        "remi-san/minipavi-service": "dev-main"
     },
     "require-dev": {
         "carthage-software/mago": "^1.60",
