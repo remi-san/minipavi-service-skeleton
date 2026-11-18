@@ -42,11 +42,14 @@ return [
 
     // The texts shown on screen: config/messages.xml over the framework's, checked to have every
     // message of the framework and of the service
-    Messages::class => factory(
-        static fn() => new MessagesXmlParser()
-            ->parseFile("{$config}/messages.xml", Messages::defaults())
-            ->check(FrameworkMessage::class, AppMessage::class),
-    ),
+    Messages::class => factory(static function () use ($config): Messages {
+        $parser = new MessagesXmlParser();
+
+        return $parser->parseFile("{$config}/messages.xml", $parser->defaults())->check(
+            FrameworkMessage::class,
+            AppMessage::class,
+        );
+    }),
     PageXmlParser::class => create()->constructor(get(Messages::class)),
 
     'page.home' => factory([PageXmlParser::class, 'parseFile'])->parameter('file', "{$config}/pages/home.xml"),
