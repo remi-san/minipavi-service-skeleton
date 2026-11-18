@@ -66,8 +66,9 @@ cd /tmp/Created && composer cs && composer analyse && composer lint && composer 
 ```
 
 Add or update tests for the changed behaviour (`tests/`, with the framework's
-`ServiceTester`). To try it in the local MiniPavi stack, create it in minipavi-stack's
-`services/` instead (see the README). Say in the PR which checks were run.
+`ServiceTester`). To try it in the local MiniPavi stack, start the created service with
+`docker compose up -d --build` and list it in minipavi-stack's `config/local-services.xml`
+(see the README, "Running it"). Say in the PR which checks were run.
 
 ## Code conventions
 

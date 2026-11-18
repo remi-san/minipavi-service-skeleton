@@ -78,7 +78,5 @@ The stack's proxy strips `/MYSERVICE` and sends the host and path it was asked f
 `X-Forwarded-Host` and `X-Forwarded-Prefix`. nginx gives them back to PHP (`HTTP_HOST`,
 `PHP_SELF`, `REQUEST_URI`), so the next URL the service gives the gateway is
 `http://services/MYSERVICE/index.php`. It trusts these headers only from Docker's private
-networks. Errors go to `docker compose logs php`.
-
-Deploying it on a server with nginx and PHP-FPM is described in minipavi-stack's README
-("Deploying a service").
+networks. Errors go to `docker compose logs php`. minipavi-stack's README ("Your own
+services") describes the proxy.
