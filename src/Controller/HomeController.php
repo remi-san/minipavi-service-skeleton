@@ -27,11 +27,6 @@ final class HomeController extends AbstractController
         private Page $page,
     ) {}
 
-    public function parametersType(): string
-    {
-        return NoParameters::class;
-    }
-
     protected function onDisplay(Request $request): Response
     {
         // No name yet: the page doesn't greet
