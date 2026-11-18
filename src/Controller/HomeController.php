@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\AppMessage;
 use MiniPaviService\Controller\AbstractController;
 use MiniPaviService\Controller\Parameters\NoParameters;
+use MiniPaviService\Controller\Parameters\ParametersType;
 use MiniPaviService\Controller\Request;
 use MiniPaviService\Controller\Response;
 use MiniPaviService\Minitel\FunctionKey;
@@ -26,6 +27,11 @@ final class HomeController extends AbstractController
     public function __construct(
         private Page $page,
     ) {}
+
+    public function parametersType(): ParametersType
+    {
+        return ParametersType::none();
+    }
 
     protected function onDisplay(Request $request): Response
     {
