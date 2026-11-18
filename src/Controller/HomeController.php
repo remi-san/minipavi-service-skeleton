@@ -12,7 +12,6 @@ use MiniPaviService\Controller\Response;
 use MiniPaviService\Minitel\FunctionKey;
 use MiniPaviService\Page;
 use MiniPaviService\Vdt\Vdt;
-use MiniPaviService\Vdt\VdtHelper;
 
 /**
  * Home screen: asks for the user's name, then greets them. The texts are in the page
@@ -47,7 +46,7 @@ final class HomeController extends AbstractController
 
         $name = trim($request->contentAsString());
         if ($name === '') {
-            return $this->askName(VdtHelper::writeLine0($this->page->message(AppMessage::NameMissing)));
+            return $this->askName(Vdt::line0($this->page->message(AppMessage::NameMissing)));
         }
 
         return $this->askName($this->page->display($request->terminal(), ['name' => $name]));
