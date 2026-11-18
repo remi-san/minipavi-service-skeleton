@@ -46,7 +46,7 @@ machine with a local gateway and Minitel emulator, run it in its own Docker stac
 
 | Path | Role |
 |---|---|
-| `compose.yaml` | nginx (`web`) and PHP-FPM (`php`), joined to the stack's `minipavi` network under the project's name |
+| `compose.yaml` | nginx (`web`) and PHP-FPM (`php`), joined to the stack's `minipavi` network under the project's name, and published on `localhost:8383` |
 | `Dockerfile` | the PHP-FPM image (PHP 8.4), which runs the service's folder, mounted as it is |
 | `docker/nginx.conf` | sends every request to `public/index.php`, with the host and path the stack's proxy was asked for |
 
@@ -74,6 +74,12 @@ The gateway then reaches it at `http://services/MYSERVICE/`, and a browser at
 http://localhost:8083/MYSERVICE/ opens it in the local emulator. On the Minitel, type its code
 on the home page, pick it in the directory (*Guide*), or make it the gateway's default service
 (`MINIPAVI_DEFAULT_URL=http://services/MYSERVICE/` in the stack's `.env`).
+
+It's also published on this computer only, at http://localhost:8383/, where
+http://localhost:8383/?web=true shows its pages in HTML. Another port is given when starting it
+(`SERVICE_PORT=8384 docker compose up -d`), or in `.env` (`SERVICE_PORT=8384`). This works
+while the stack is stopped, as long as its `minipavi` network exists (it's removed by the
+stack's `docker compose down`).
 
 The stack's proxy strips `/MYSERVICE` and sends the host and path it was asked for in
 `X-Forwarded-Host` and `X-Forwarded-Prefix`. nginx gives them back to PHP (`HTTP_HOST`,
