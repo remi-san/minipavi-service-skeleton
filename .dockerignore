@@ -1,0 +1,4 @@
+# Not sent to docker build: the image installs its own packages
+/vendor/
+/.git/
+/.phpunit.cache/
