@@ -49,7 +49,7 @@ composer create-project remi-san/minipavi-service-skeleton services/MyService --
 docker compose up -d --build services   # http://localhost:8083/MyService/ (the gateway: http://services/MyService/)
 ```
 
-To reach it from the Minitel there, add it to `services/MiniPaviAcc/config/services.xml` (code
-and URL `http://services/MyService/`), or make it the gateway's default service
+To reach it from the Minitel there, type its URL, `http://services/MyService/`, on the home
+page, or make it the gateway's default service
 (`MINIPAVI_DEFAULT_URL` in `.env`). Deploying it on a server with nginx and PHP-FPM is
 described in minipavi-stack's README ("Deploying a service").
