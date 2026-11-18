@@ -3,9 +3,6 @@
     "description": "Skeleton of a Minitel service built on the MiniPavi service framework",
     "license": "GPL-3.0-or-later",
     "type": "project",
-    "repositories": [
-        { "type": "vcs", "url": "https://github.com/remi-san/minipavi-service" }
-    ],
     "require": {
         "php": ">=8.4",
         "monolog/monolog": "^3.13",
