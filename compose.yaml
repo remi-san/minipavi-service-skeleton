@@ -21,10 +21,8 @@ services:
       # Key signing the context given to the gateway (in .env, beside this file)
       CONTEXT_SECRET: ${CONTEXT_SECRET:-}
     volumes:
-      # The code, so that a change is served without rebuilding (composer.json: rebuild)
-      - ./config:/var/www/app/config:ro
-      - ./public:/var/www/app/public:ro
-      - ./src:/var/www/app/src:ro
+      # The service's folder as it is, vendor/ included: a change is served right away
+      - ./:/var/www/app:ro
 
 networks:
   minipavi:

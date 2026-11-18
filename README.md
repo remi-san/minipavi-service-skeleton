@@ -47,7 +47,7 @@ machine with a local gateway and Minitel emulator, run it in its own Docker stac
 | Path | Role |
 |---|---|
 | `compose.yaml` | nginx (`web`) and PHP-FPM (`php`), joined to the stack's `minipavi` network as `my-service` |
-| `Dockerfile` | the PHP-FPM image: PHP 8.4, the service and its packages (without the dev ones) |
+| `Dockerfile` | the PHP-FPM image (PHP 8.4), which runs the service's folder, mounted as it is |
 | `docker/nginx.conf` | sends every request to `public/index.php`, with the host and path the stack's proxy was asked for |
 
 1. Rename the alias `my-service` in `compose.yaml`: each service on the network needs its own.
@@ -56,8 +56,8 @@ machine with a local gateway and Minitel emulator, run it in its own Docker stac
    echo "CONTEXT_SECRET=$(openssl rand -hex 32)" > .env   # key signing the context
    docker compose up -d --build
    ```
-   `config/`, `public/` and `src/` are mounted: a change is served without rebuilding (a
-   change to `composer.json` needs `--build`).
+   The service's folder is mounted as it is, `vendor/` included: what you change (code,
+   pages, `composer install`/`update`) is served right away, without rebuilding.
 3. List it in the stack's `config/local-services.xml`, with a code and the alias, then restart
    the stack's `services` container (`docker compose up -d --force-recreate services`):
    ```xml

@@ -1,4 +1,2 @@
-# Not sent to docker build: the image installs its own packages
-/vendor/
-/.git/
-/.phpunit.cache/
+# The image has nothing of the service (compose.yaml mounts its folder): nothing to send
+*
