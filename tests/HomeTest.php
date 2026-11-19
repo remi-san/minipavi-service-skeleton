@@ -21,8 +21,10 @@ final class HomeTest extends TestCase
     protected function setUp(): void
     {
         $container = Container::build();
+        $serializer = new ContextSerializer($container->router());
         $this->tester = new ServiceTester(
-            new Service($container->router(), $container->messages(), new ContextSerializer($container->router())),
+            new Service($container->router(), $container->messages(), $serializer),
+            $serializer,
         );
     }
 
