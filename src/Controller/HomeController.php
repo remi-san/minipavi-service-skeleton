@@ -6,10 +6,12 @@ namespace App\Controller;
 
 use App\AppMessage;
 use MiniPaviService\Controller\AbstractController;
+use MiniPaviService\Controller\ControllerState;
 use MiniPaviService\Controller\Parameters\NoParameters;
 use MiniPaviService\Controller\Parameters\ParametersType;
 use MiniPaviService\Controller\Request;
 use MiniPaviService\Controller\Response;
+use MiniPaviService\Controller\Response\RunCommand;
 use MiniPaviService\Minitel\FunctionKey;
 use MiniPaviService\Page;
 use MiniPaviService\Vdt\Vdt;
@@ -53,9 +55,13 @@ final class HomeController extends AbstractController
         return $this->askName($this->page->display($request->terminal(), ['name' => $name]));
     }
 
-    // Sends vdt, then reads a name
+    /**
+     * Sends vdt, then reads a name
+     *
+     * @return Response<ControllerState>
+     */
     private function askName(Vdt $vdt): Response
     {
-        return Response::readInput($vdt, $this->page->inputCommand());
+        return RunCommand::readInput($vdt, $this->page->inputCommand());
     }
 }
