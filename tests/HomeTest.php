@@ -7,6 +7,7 @@ namespace App\Tests;
 use App\Container;
 use MiniPaviService\Core\ContextSerializer;
 use MiniPaviService\Core\Service;
+use MiniPaviService\Core\Sessions;
 use MiniPaviService\Minitel\FunctionKey;
 use MiniPaviService\Testing\ServiceTester;
 use PHPUnit\Framework\TestCase;
@@ -21,9 +22,10 @@ final class HomeTest extends TestCase
     protected function setUp(): void
     {
         $container = Container::build();
-        $serializer = new ContextSerializer($container->router());
+        $router = $container->router();
+        $serializer = new ContextSerializer($router);
         $this->tester = new ServiceTester(
-            new Service($container->router(), $container->messages(), $serializer),
+            new Service(new Sessions($serializer, $router), $container->messages()),
             $serializer,
         );
     }
