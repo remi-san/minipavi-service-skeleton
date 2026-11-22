@@ -46,8 +46,8 @@ return [
         $parser = new MessagesXmlParser();
 
         return $parser->parseFile("{$config}/messages.xml", $parser->defaults())->check(
-            FrameworkMessage::class,
-            AppMessage::class,
+            ...FrameworkMessage::cases(),
+            ...AppMessage::cases(),
         );
     }),
     PageXmlParser::class => create()->constructor(get(Messages::class)),
