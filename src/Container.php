@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use DI\ContainerBuilder;
-use MiniPaviService\Core\Router;
+use MiniPaviService\Core\Routing\Router;
 use MiniPaviService\Http\Emulator\EmulatorConfig;
 use MiniPaviService\Http\Url\RequestUrl;
 use MiniPaviService\Message\Messages;

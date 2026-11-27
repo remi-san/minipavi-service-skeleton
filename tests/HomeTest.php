@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Container;
-use MiniPaviService\Core\ContextSerializer;
+use MiniPaviService\Core\Context\ContextSerializer;
 use MiniPaviService\Core\Service;
 use MiniPaviService\Core\Sessions;
 use MiniPaviService\Minitel\FunctionKey;

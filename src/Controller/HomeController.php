@@ -38,7 +38,7 @@ final class HomeController extends AbstractController
     protected function onDisplay(Request $request): Response
     {
         // No name yet: the page doesn't greet
-        return $this->askName($this->page->display($request->terminal(), ['name' => '']));
+        return $this->askName($this->page->display($request->terminal, ['name' => '']));
     }
 
     protected function onReadInput(Request $request): Response
@@ -52,7 +52,7 @@ final class HomeController extends AbstractController
             return $this->askName(Vdt::line0($this->page->message(AppMessage::NameMissing)));
         }
 
-        return $this->askName($this->page->display($request->terminal(), ['name' => $name]));
+        return $this->askName($this->page->display($request->terminal, ['name' => $name]));
     }
 
     /**
