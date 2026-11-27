@@ -7,8 +7,8 @@ declare(strict_types=1);
 
 use App\AppMessage;
 use App\Controller\HomeController;
-use MiniPaviService\Core\Router;
-use MiniPaviService\Core\RouterBuilder;
+use MiniPaviService\Core\Routing\Router;
+use MiniPaviService\Core\Routing\RouterBuilder;
 use MiniPaviService\Http\Emulator\EmulatorConfig;
 use MiniPaviService\Http\Url\RequestUrl;
 use MiniPaviService\Message\FrameworkMessage;
